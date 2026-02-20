@@ -1,4 +1,6 @@
-app.get("/doctor/patients", verifyToken, isDoctor, async (req, res) => {
+import { pool } from "../config/db.js";
+
+export const getDoctorPatients = async (req, res) => {
   try {
     const doctorResult = await pool.query(
       "SELECT id FROM doctors WHERE appwrite_user_id = $1",
@@ -19,6 +21,7 @@ app.get("/doctor/patients", verifyToken, isDoctor, async (req, res) => {
     res.json(patients.rows);
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error fetching patients" });
   }
-});
+};
